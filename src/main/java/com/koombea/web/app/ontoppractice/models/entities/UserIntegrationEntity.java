@@ -12,6 +12,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.ColumnTransformer;
 
+import java.util.List;
+
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "user_integrations")
@@ -32,6 +34,12 @@ public class UserIntegrationEntity extends BaseEntity {
     @ColumnTransformer(write = "?::json")
     private LinkedAccountPayloadDTO payload;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private UserEntity user;
+
+    @OneToMany(mappedBy = "integration", cascade = CascadeType.ALL)
+    private List<SyncDataEntity> syncData;
+
+    @OneToMany(mappedBy = "integration", cascade = CascadeType.ALL)
+    private List<EmployeeIntegrationEntity> employees;
 }

@@ -35,9 +35,8 @@ public class MergeService {
         return headerSignatureCleaned.equals(HmacSha256Utils.encodeBase64URLSafeString(payload));
     }
 
-    public UserIntegrationEntity createFromPayload(String payload) throws JsonProcessingException {
+    public UserIntegrationEntity createUserIntegrationFromPayload(String payload, UserEntity user) throws JsonProcessingException {
         LinkedAccountPayloadDTO linkedAccount = new ObjectMapper().readValue(payload, LinkedAccountPayloadDTO.class);
-        UserEntity user = userRepository.findById("310a3a9c-9b5d-11ee-b9d1-0242ac120002").get();
         UserIntegrationEntity integration = new UserIntegrationEntity();
         integration.setUser(user);
         integration.setServiceName("merge");
