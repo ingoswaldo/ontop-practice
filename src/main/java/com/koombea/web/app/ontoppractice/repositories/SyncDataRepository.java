@@ -17,5 +17,7 @@ public interface SyncDataRepository extends CrudRepository<SyncDataEntity, Strin
 
     boolean existsByStatus(SyncIntegrationEnum status);
 
+    boolean existsByIntegrationIdAndModelIdAndStatus(String integrationId, String modelId, SyncIntegrationEnum status);
+
     Optional<SyncDataEntity> findFirstByIntegrationIdAndModelIdAndStatusOrderByCreatedAtDesc(String integrationId, String modelId, SyncIntegrationEnum status);
 }

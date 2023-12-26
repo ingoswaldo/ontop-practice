@@ -20,13 +20,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class MergeService {
 
-    private final UserRepository userRepository;
-
     private final UserIntegrationRepository integrationRepository;
 
     @Autowired
-    public MergeService(UserRepository userRepository, UserIntegrationRepository integrationRepository) {
-        this.userRepository = userRepository;
+    public MergeService(UserIntegrationRepository integrationRepository) {
         this.integrationRepository = integrationRepository;
     }
 

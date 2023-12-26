@@ -44,6 +44,10 @@ public class SyncDataService {
         return syncDataRepository.existsByStatus(SyncIntegrationEnum.SYNCING);
     }
 
+    public boolean existsSyncingByIntegrationIdAndModel(String integrationId, String modelId) {
+        return syncDataRepository.existsByIntegrationIdAndModelIdAndStatus(integrationId, modelId, SyncIntegrationEnum.SYNCING);
+    }
+
     public Optional<SyncDataEntity> findLatestSyncDoneByIntegrationIdAndModel(String integrationId, String modelId) {
         return syncDataRepository.findFirstByIntegrationIdAndModelIdAndStatusOrderByCreatedAtDesc(integrationId, modelId, SyncIntegrationEnum.DONE);
     }

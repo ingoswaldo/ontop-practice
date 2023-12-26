@@ -42,7 +42,7 @@ public class HrisSyncDataWatcher extends BaseMergeSyncDataWatcher {
     }
 
     @Override
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(cron = "@hourly")
     public void checkSyncData() {
         if (syncDataService.existsSyncing()) return;
 

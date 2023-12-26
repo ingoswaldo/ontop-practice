@@ -46,7 +46,7 @@ public class EmployeeIntegrationService {
         this.syncDataService = syncDataService;
     }
 
-    public void importEmployeesFromMerge(UserIntegrationEntity userIntegration) {
+    public void importEmployeesFromMerge(@NotNull UserIntegrationEntity userIntegration) {
         Optional<SyncDataEntity> syncData = syncDataService.findLatestSyncDoneByIntegrationIdAndModel(userIntegration.getId(), getModelId());
         Optional<String> cursor = Optional.empty();
         AtomicReference<Optional<OffsetDateTime>> modifiedAfter = new AtomicReference<>(Optional.empty());
@@ -90,7 +90,10 @@ public class EmployeeIntegrationService {
     private void processEmployeeList(@NotNull List<Employee> employeeList, UserIntegrationEntity userIntegration) {
         if (employeeList.isEmpty()) return;
 
-        syncDataService.create(userIntegration, getModelId(), SyncIntegrationEnum.SYNCING);
+        if (!syncDataService.existsSyncingByIntegrationIdAndModel(userIntegration.getId(), getModelId())) {
+            syncDataService.create(userIntegration, getModelId(), SyncIntegrationEnum.SYNCING);
+        }
+
         employeeList.forEach(employeeMerge -> createOrUpdateFromEmployeeHrisMerge(employeeMerge, userIntegration));
     }
 }

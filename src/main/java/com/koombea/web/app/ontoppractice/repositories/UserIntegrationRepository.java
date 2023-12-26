@@ -17,6 +17,6 @@ public interface UserIntegrationRepository extends CrudRepository<UserIntegratio
 
     List<UserIntegrationEntity> findAllByCategoryNameAndServiceNameEquals(String categoryName, String serviceName);
 
-    @Query(value = "SELECT * FROM user_integrations WHERE payload->data->accountToken = :accountToken", nativeQuery = true)
-    Optional<UserIntegrationEntity> findByAccountToken(@Param("accountToken") String accountToken);
+    @Query(value = "SELECT * FROM user_integrations WHERE payload ->'data' ->>'account_token' = :accountToken", nativeQuery = true)
+    Optional<UserIntegrationEntity> findFirstByPayloadDataAccountToken(@Param("accountToken") String accountToken);
 }

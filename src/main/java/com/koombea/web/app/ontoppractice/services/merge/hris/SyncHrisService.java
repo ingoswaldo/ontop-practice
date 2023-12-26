@@ -7,7 +7,6 @@ package com.koombea.web.app.ontoppractice.services.merge.hris;
 
 import com.merge.api.resources.hris.syncstatus.SyncStatusClient;
 import com.merge.api.resources.hris.syncstatus.requests.SyncStatusListRequest;
-import com.merge.api.resources.hris.types.PaginatedEmployeeList;
 import com.merge.api.resources.hris.types.PaginatedSyncStatusList;
 import lombok.Getter;
 

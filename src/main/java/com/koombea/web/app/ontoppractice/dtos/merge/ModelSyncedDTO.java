@@ -7,14 +7,14 @@ package com.koombea.web.app.ontoppractice.dtos.merge;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.koombea.web.app.ontoppractice.dtos.merge.linkedaccount.DataDTO;
+import com.koombea.web.app.ontoppractice.dtos.merge.modelsynced.DataDTO;
+import com.koombea.web.app.ontoppractice.dtos.merge.modelsynced.LinkedAccountDTO;
 import com.koombea.web.app.ontoppractice.dtos.merge.shared.HookDTO;
-import com.koombea.web.app.ontoppractice.dtos.merge.linkedaccount.LinkedAccountDTO;
 import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LinkedAccountPayloadDTO {
+public class ModelSyncedDTO {
 
     private HookDTO hook;
 
