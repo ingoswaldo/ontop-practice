@@ -13,18 +13,17 @@ import lombok.AllArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
-import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
-import org.springframework.batch.core.repository.JobRestartException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.server.ServerWebInputException;
+
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @RestController
 @AllArgsConstructor
@@ -42,7 +41,7 @@ public class MergeWebHooksController extends BaseWebhooksController {
     @PostMapping("/merge/linked-accounts")
     public ResponseEntity<Void> linkedAccount(@RequestHeader("X-Merge-Webhook-Signature") String headerSignature, @RequestBody String payload) {
         if (!mergeService.isAllowed(payload, headerSignature)) {
-            return ResponseEntity.badRequest().build();
+            throw new ServerWebInputException("header signature is not valid");
         }
 
         try {
@@ -50,14 +49,14 @@ public class MergeWebHooksController extends BaseWebhooksController {
             mergeService.createUserIntegrationFromPayload(payload, user);
             return ResponseEntity.ok().build();
         } catch (JsonProcessingException exception) {
-            return ResponseEntity.badRequest().build();
+            throw new HttpServerErrorException(exception.getMessage(), INTERNAL_SERVER_ERROR, String.valueOf(INTERNAL_SERVER_ERROR.value()), null, null, null);
         }
     }
 
     @PostMapping("/merge/model-synced")
     public ResponseEntity<Void> modelSynced(@RequestHeader("X-Merge-Webhook-Signature") String headerSignature, @RequestBody String payload) {
         if (!mergeService.isAllowed(payload, headerSignature)) {
-            return ResponseEntity.badRequest().build();
+            throw new ServerWebInputException("header signature is not valid");
         }
 
         try {
@@ -69,7 +68,7 @@ public class MergeWebHooksController extends BaseWebhooksController {
 
             return ResponseEntity.ok().build();
         } catch (Exception exception) {
-            return ResponseEntity.internalServerError().build();
+            throw new HttpServerErrorException(exception.getMessage(), INTERNAL_SERVER_ERROR, String.valueOf(INTERNAL_SERVER_ERROR.value()), null, null, null);
         }
     }
 }
